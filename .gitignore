@@ -1,2 +1,7 @@
-node_modules
+# Directories
 node_modules/
+.vscode/
+
+#Files
+test.test.js
+.gitignore

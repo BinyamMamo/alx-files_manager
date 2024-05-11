@@ -1,9 +1,11 @@
-# 🗃️ File Manager
+# Files Manager 🗃️ 
 
-## Project Overview 🪶
+![](https://img.freepik.com/free-vector/data-center-technology_24908-59338.jpg?t=st=1715425384~exp=1715428984~hmac=e090745f5d270f22b9ad65329b36342e7ead5981b2b456234f4a99c20224f939&w=740)
+
+## Project Overview
 This project is a files manager built using back-end technologies such as JavaScript ES6, NoSQL MongoDB, Redis, NodeJS, and ExpressJS. The purpose of the project is to create a simple platform for uploading and viewing files, with features like user authentication, file listing, file uploading, changing file permissions, file viewing, and generating thumbnails for images.
 
-## 🔧 Requirements and Dependencies:
+## Requirements and Dependencies
 - Node JS (version 12.x.x)
 - Redis
 - MongoDB
@@ -42,8 +44,7 @@ npm start
 ```
 8. Access the application in your browser at `http://<DB_HOST>:<DB_PORT>`.
 
-### Project Structure
---------------------
+## Project Structure
 
 ```bash
 .
