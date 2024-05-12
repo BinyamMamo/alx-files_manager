@@ -1,7 +1,6 @@
 #!/usr/bin/node
-
-const { createClient } = require('redis');
-const { promisify } = require('util');
+import { createClient } from 'redis';
+import { promisify } from 'util';
 
 class RedisClient {
   constructor() {
@@ -23,7 +22,6 @@ class RedisClient {
 
   async get(key) {
     return promisify(this.client.get).bind(this.client)(key);
-    // return promisify(this.client.get(key)).bind(this.client);
   }
 
   async set(key, value, duration) {

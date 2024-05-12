@@ -1,7 +1,6 @@
 #!/usr/bin/node
-// const { MongoClient } = require('mongodb');
 import { MongoClient } from 'mongodb';
-// require('dotenv').config();
+import 'dotenv/config';
 
 class DBClient {
   constructor() {
