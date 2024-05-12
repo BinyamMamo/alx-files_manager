@@ -1,6 +1,7 @@
 #!/usr/bin/node
-const { MongoClient } = require('mongodb');
-require('dotenv').config();
+// const { MongoClient } = require('mongodb');
+import { MongoClient } from 'mongodb';
+// require('dotenv').config();
 
 class DBClient {
   constructor() {
@@ -37,7 +38,7 @@ class DBClient {
   async nbFiles() {
     try {
       const files = this.client.db().collection('files');
-      const count = await files.countDocumets();
+      const count = await files.countDocuments();
       return count;
     } catch (err) {
       throw new Error(`Couldn't display number of 'files': ${err}`);
