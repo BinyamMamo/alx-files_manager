@@ -1,5 +1,6 @@
+#!/usr/bin/node
 const { MongoClient } = require('mongodb');
-require('dotenv').config()
+require('dotenv').config();
 
 class DBClient {
   constructor() {
@@ -29,19 +30,20 @@ class DBClient {
       const count = await users.countDocuments();
       return count;
     } catch (err) {
-      throw new Error(`Couldn't display number of 'users': ${err}`)
+      throw new Error(`Couldn't display number of 'users': ${err}`);
     }
   }
 
   async nbFiles() {
     try {
       const files = this.client.db().collection('files');
-      const coutn = await files.countDocumets();
+      const count = await files.countDocumets();
+      return count;
     } catch (err) {
-      throw new Error(`Couldn't display number of 'files': ${err}`)
+      throw new Error(`Couldn't display number of 'files': ${err}`);
     }
   }
 }
 
-const dbClient = new DBClient()
+const dbClient = new DBClient();
 module.exports = dbClient;
