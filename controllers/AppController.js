@@ -4,7 +4,7 @@ import dbClient from '../utils/db';
 /**
  * Controller for managing the application.
  */
-export default class AppController {
+class AppController {
   /**
    * Get the status of the Redis and DB clients.
    *
@@ -37,3 +37,5 @@ export default class AppController {
     }
   }
 }
+
+export default AppController;
