@@ -1,3 +1,4 @@
+#!/usr/bin/node
 import express from 'express';
 import 'dotenv/config';
 import router from './routes/index';
