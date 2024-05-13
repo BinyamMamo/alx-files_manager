@@ -1,11 +1,10 @@
-#!/usr/bin/node
 import redisClient from '../utils/redis';
 import dbClient from '../utils/db';
 
 /**
  * Controller for managing the application.
  */
-class AppController {
+export default class AppController {
   /**
    * Get the status of the Redis and DB clients.
    *
@@ -38,5 +37,3 @@ class AppController {
     }
   }
 }
-
-module.exports = AppController;

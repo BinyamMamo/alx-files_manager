@@ -1,4 +1,3 @@
-#!/usr/bin/node
 import { Router } from 'express';
 import AppController from '../controllers/AppController';
 import UsersController from '../controllers/UsersController';
@@ -10,4 +9,4 @@ router
   .get('/stats', AppController.getStats)
   .post('/users', UsersController.postNew);
 
-module.exports = router;
+export default router;

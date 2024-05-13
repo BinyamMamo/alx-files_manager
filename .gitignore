@@ -6,4 +6,3 @@ node_modules/
 test.test.js
 .gitignore
 .env
-app.js

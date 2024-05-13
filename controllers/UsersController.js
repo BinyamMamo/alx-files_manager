@@ -1,8 +1,7 @@
-#!/usr/bin/node
 import bcrypt from 'bcrypt';
 import dbClient from '../utils/db';
 
-class UsersController {
+export default class UsersController {
   static async postNew(req, res) {
     try {
       const { email, password } = req.body;
@@ -38,5 +37,3 @@ class UsersController {
     }
   }
 }
-
-module.exports = UsersController;
