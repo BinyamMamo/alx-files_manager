@@ -5,7 +5,8 @@ import UsersController from '../controllers/UsersController';
 
 const router = Router();
 
-router.get('/status', AppController.getStatus)
+router
+  .get('/status', AppController.getStatus)
   .get('/stats', AppController.getStats)
   .post('/users', UsersController.postNew);
 
