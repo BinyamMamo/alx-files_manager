@@ -19,7 +19,7 @@ class AppController {
       db: dbClient.isAlive(),
     });
   }
-  
+
   /**
    * Retrieves the statistics of the application.
    * @param {Object} req - The request object.
@@ -31,10 +31,10 @@ class AppController {
     try {
       const users = await dbClient.nbUsers();
       const files = await dbClient.nbFiles();
-      res.status(200).json({ users, files })
+      res.status(200).json({ users, files });
     } catch (err) {
-      console.error(err.message)
-      res.status(500).json({error: `couldn't get stats`})
+      console.error(err.message);
+      res.status(500).json({ error: 'couldn\'t get stats' });
     }
   }
 }

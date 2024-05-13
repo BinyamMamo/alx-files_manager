@@ -1,21 +1,20 @@
 #!/usr/bin/node
 import { MongoClient } from 'mongodb';
-import 'dotenv/config';
 
 class DBClient {
   constructor() {
     this.connected = false;
     this.db = null;
-    
+
     const host = process.env.DB_HOST || 'localhost';
     const port = process.env.DB_PORT || 27017;
-    const db_name = process.env.DB_DATABASE || 'files_manager';
-    const url = `mongodb://${host}:${port}/${db_name}`;
+    const dbName = process.env.DB_DATABASE || 'files_manager';
+    const url = `mongodb://${host}:${port}/${dbName}`;
 
     this.client = new MongoClient(url, { useUnifiedTopology: true });
     this.client.connect().then(() => {
       this.connected = true;
-      this.db = this.client.db()
+      this.db = this.client.db();
     }).catch((err) => {
       console.log(err.message);
       this.connected = false;
