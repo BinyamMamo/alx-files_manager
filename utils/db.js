@@ -1,21 +1,28 @@
-const { MongoClient } = require('mongodb');
+#!/usr/bin/node
+
+const mongo = require('mongodb');
+const { pwdHashed } = require('./utils');
 
 class DBClient {
   constructor() {
     this.connected = false;
 
-    const host = process.env.DB_HOST || 'localhost';
+    const host = process.env.DB_HOST || "localhost";
     const port = process.env.DB_PORT || 27017;
-    const dbName = process.env.DB_DATABASE || 'files_manager';
+    const dbName = process.env.DB_DATABASE || "files_manager";
     const url = `mongodb://${host}:${port}/${dbName}`;
 
-    this.client = new MongoClient(url, { useUnifiedTopology: true });
-    this.client.connect().then(() => {
-      this.connected = true;
-    }).catch((err) => {
-      console.log(err.message);
-      this.connected = false;
-    });
+    this.database = dbName;
+    this.client = new mongo.MongoClient(url, { useUnifiedTopology: true });
+    this.client
+      .connect()
+      .then(() => {
+        this.connected = true;
+      })
+      .catch((err) => {
+        console.log(err.message);
+        this.connected = false;
+      });
   }
 
   isAlive() {
@@ -24,7 +31,7 @@ class DBClient {
 
   async nbUsers() {
     try {
-      const users = this.client.db().collection('users');
+      const users = this.client.db().collection("users");
       const count = await users.countDocuments();
       return count;
     } catch (err) {
@@ -34,12 +41,57 @@ class DBClient {
 
   async nbFiles() {
     try {
-      const files = this.client.db().collection('files');
+      const files = this.client.db().collection("files");
       const count = await files.countDocuments();
       return count;
     } catch (err) {
       throw new Error(`Couldn't display number of 'files': ${err}`);
     }
+  }
+
+  async createUser(email, password) {
+    const hashedPwd = pwdHashed(password);
+    await this.client.connect();
+    const user = await this.client
+      .db(this.database)
+      .collection("users")
+      .insertOne({ email, password: hashedPwd });
+    return user;
+  }
+
+  async getUser(email) {
+    await this.client.connect();
+    const user = await this.client
+      .db(this.database)
+      .collection("users")
+      .find({ email })
+      .toArray();
+    if (!user.length) {
+      return null;
+    }
+    return user[0];
+  }
+
+  async getUserById(id) {
+    const _id = new mongo.ObjectID(id);
+    await this.client.connect();
+    const user = await this.client
+      .db(this.database)
+      .collection("users")
+      .find({ _id })
+      .toArray();
+    if (!user.length) {
+      return null;
+    }
+    return user[0];
+  }
+
+  async userExist(email) {
+    const user = await this.getUser(email);
+    if (user) {
+      return true;
+    }
+    return false;
   }
 
   async closeDB() {

@@ -15,26 +15,23 @@ class RedisClient {
   }
 
   isAlive() {
-    // return this.client.connected;
     return this.connected;
   }
 
   async get(key) {
-    return promisify(this.client.get).bind(this.client)(key);
+    const getAsync = promisify(this.client.get).bind(this.client);
+    const value = await getAsync(key);
+    return value;
   }
 
   async set(key, value, duration) {
     const setAsync = promisify(this.client.set).bind(this.client);
-    return setAsync(key, value, 'EX', duration);
+    await setAsync(key, value, 'EX', duration);
   }
 
   async del(key) {
-    try {
-      // await this.client.del(key);
-      await promisify(this.client.del).bind(this.client)(key);
-    } catch (err) {
-      throw new Error('Error deleting values from Redis.');
-    }
+    const delAsync = promisify(this.client.del).bind(this.client);
+    await delAsync(key);
   }
 }
 
