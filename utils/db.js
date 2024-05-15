@@ -1,7 +1,7 @@
 #!/usr/bin/node
 
-const mongo = require('mongodb');
-const { pwdHashed } = require('./utils');
+const mongo = require("mongodb");
+const { pwdHashed } = require("./helpers");
 
 class DBClient {
   constructor() {

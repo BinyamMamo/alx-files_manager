@@ -3,8 +3,8 @@
 const { v4 } = require('uuid');
 const dbClient = require('../utils/db');
 const redisClient = require('../utils/redis');
-const { getAuthzHeader, getToken, pwdHashed } = require('../utils/utils');
-const { decodeToken, getCredentials } = require('../utils/utils');
+const { getAuthzHeader, getToken, pwdHashed } = require('../utils/helpers');
+const { decodeToken, getCredentials } = require('../utils/helpers');
 
 const getConnect = async (req, res) => {
   const authzHeader = getAuthzHeader(req);
