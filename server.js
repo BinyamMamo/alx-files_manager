@@ -1,14 +1,13 @@
 #!/usr/bin/node
-/* eslint-disable import/no-named-as-default */
-import express from 'express';
-import router from './routes/index';
+const express = require('express');
+const routes = require('./routes/index');
 
-const server = express();
-const port = process.env.PORT || 5000;
+const app = express();
+const port = 5000 || process.env.PORT;
 
-server.use(express.json());
-server.use(router);
+app.use(express.json());
+app.use('/', routes);
 
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
