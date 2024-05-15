@@ -1,13 +1,6 @@
 const redisClient = require('../utils/redis');
 const dbClient = require('../utils/db');
 
-/**
- * Get the status of the Redis and DB clients.
- *
- * @param {Object} req - The request object.
- * @param {Object} res - The response object.
- * @returns {Object} The status of the Redis and DB clients.
- */
 function getStatus(req, res) {
   res.status(200).json({
     redis: redisClient.isAlive(),
@@ -15,13 +8,6 @@ function getStatus(req, res) {
   });
 }
 
-/**
- * Retrieves the statistics of the application.
- * @param {Object} req - The request object.
- * @param {Object} res - The response object.
- * @returns {Promise<void>} - A promise that resolves when the
- *   statistics are retrieved and sent as a JSON response.
- */
 async function getStats(req, res) {
   try {
     const users = await dbClient.nbUsers();

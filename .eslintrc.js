@@ -19,7 +19,6 @@ module.exports = {
   },
   plugins: ['jest'],
   rules: {
-    "max-len": ["error", 80],
     'max-classes-per-file': 'off',
     'no-underscore-dangle': 'off',
     'no-console': 'off',
@@ -37,3 +36,4 @@ module.exports = {
     }
   ]
 };
+

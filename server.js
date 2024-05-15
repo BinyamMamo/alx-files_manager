@@ -1,4 +1,3 @@
-#!/usr/bin/node
 const express = require('express');
 const routes = require('./routes/index');
 
