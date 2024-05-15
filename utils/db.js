@@ -1,15 +1,15 @@
 #!/usr/bin/node
 
-const mongo = require("mongodb");
-const { pwdHashed } = require("./helpers");
+const mongo = require('mongodb');
+const { pwdHashed } = require('./helpers');
 
 class DBClient {
   constructor() {
     this.connected = false;
 
-    const host = process.env.DB_HOST || "localhost";
+    const host = process.env.DB_HOST || 'localhost';
     const port = process.env.DB_PORT || 27017;
-    const dbName = process.env.DB_DATABASE || "files_manager";
+    const dbName = process.env.DB_DATABASE || 'files_manager';
     const url = `mongodb://${host}:${port}/${dbName}`;
 
     this.database = dbName;
@@ -31,7 +31,7 @@ class DBClient {
 
   async nbUsers() {
     try {
-      const users = this.client.db().collection("users");
+      const users = this.client.db().collection('users');
       const count = await users.countDocuments();
       return count;
     } catch (err) {
@@ -41,7 +41,7 @@ class DBClient {
 
   async nbFiles() {
     try {
-      const files = this.client.db().collection("files");
+      const files = this.client.db().collection('files');
       const count = await files.countDocuments();
       return count;
     } catch (err) {
@@ -54,7 +54,7 @@ class DBClient {
     await this.client.connect();
     const user = await this.client
       .db(this.database)
-      .collection("users")
+      .collection('users')
       .insertOne({ email, password: hashedPwd });
     return user;
   }
@@ -63,7 +63,7 @@ class DBClient {
     await this.client.connect();
     const user = await this.client
       .db(this.database)
-      .collection("users")
+      .collection('users')
       .find({ email })
       .toArray();
     if (!user.length) {
@@ -77,7 +77,7 @@ class DBClient {
     await this.client.connect();
     const user = await this.client
       .db(this.database)
-      .collection("users")
+      .collection('users')
       .find({ _id })
       .toArray();
     if (!user.length) {

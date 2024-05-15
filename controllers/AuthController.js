@@ -36,7 +36,7 @@ const getConnect = async (req, res) => {
   await redisClient.set(`auth_${accessToken}`, user._id.toString('utf8'), 60 * 60 * 24);
   res.json({ token: accessToken });
   res.end();
-}
+};
 
 const getDisconnect = async (req, res) => {
   const token = req.headers['x-token'];
@@ -56,7 +56,7 @@ const getDisconnect = async (req, res) => {
   }
   await redisClient.del(`auth_${token}`);
   res.status(204).end();
-}
+};
 
 const getMe = async (req, res) => {
   const token = req.headers['x-token'];
@@ -75,7 +75,7 @@ const getMe = async (req, res) => {
     return;
   }
   res.json({ id: user._id, email: user.email }).end();
-}
+};
 
 module.exports = {
   getConnect,
