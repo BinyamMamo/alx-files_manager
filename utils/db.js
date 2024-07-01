@@ -59,17 +59,36 @@ class DBClient {
     return user;
   }
 
-  async getUser(email) {
-    await this.client.connect();
-    const user = await this.client
-      .db(this.database)
-      .collection('users')
-      .find({ email })
-      .toArray();
-    if (!user.length) {
-      return null;
+  async getUsers() {
+    try {
+      await this.client.connect();
+      const users = await this.client
+        .db(this.database)
+        .collection('users')
+        .find({})
+        .toArray();
+      // this.client.close();
+      return users;
+    } catch (err) {
+      throw new Error(`Getting users: ${err.message}`);
     }
-    return user[0];
+  }
+
+  async getUser(email) {
+    try {
+      await this.client.connect();
+      const user = await this.client
+        .db(this.database)
+        .collection('users')
+        .find({ email })
+        .toArray();
+      if (!user.length) {
+        return null;
+      }
+      return user[0];
+    } catch (err) {
+      throw new Error(`Getting a user(${email}): ${err.message}`);
+    }
   }
 
   async getUserById(id) {
