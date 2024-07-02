@@ -1,9 +1,11 @@
 # Directories
 node_modules/
 .vscode/
+.bkp/
 
 #Files
 test.test.js
 # .gitignore
 .env
 notes.md
+controllers/FilesController.js.old

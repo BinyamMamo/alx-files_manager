@@ -35,10 +35,22 @@ const getCredentials = (decodedToken) => {
   return { email, password };
 };
 
+class FILE {
+  constructor({ userId, name, type, parentId, isPublic, data }) {
+    this.userId = userId;
+    this.name = name;
+    this.type = type;
+    this.parentId = parentId;
+    this.isPublic = isPublic;
+    this.data = data;
+  }
+}
+
 module.exports = {
   pwdHashed,
   getAuthzHeader,
   getToken,
   decodeToken,
   getCredentials,
+  FILE,
 };

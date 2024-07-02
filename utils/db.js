@@ -39,6 +39,32 @@ class DBClient {
     }
   }
 
+  async createFile(data) {
+    await this.client.connect();
+    const file = await this.client
+      .db(this.database)
+      .collection('files')
+      .insertOne(data);
+    return file;
+  }
+
+  async getFile(_id) {
+    try {
+      await this.client.connect();
+      const file = await this.client
+        .db(this.database)
+        .collection('files')
+        .find({ _id })
+        .toArray();
+      if (!file.length) {
+        return null;
+      }
+      return file[0];
+    } catch (err) {
+      throw new Error(`Getting a FIle(${_id}): ${err.message}`);
+    }
+  }
+
   async nbFiles() {
     try {
       const files = this.client.db().collection('files');
