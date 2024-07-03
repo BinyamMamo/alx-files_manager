@@ -1,5 +1,8 @@
+const Queue = require('bull/lib/queue');
 const dbClient = require('../utils/db');
 const redisClient = require('../utils/redis');
+
+const userQueue = new Queue('email sending');
 
 const postNew = async (req, res) => {
   const { email, password } = req.body;
@@ -18,6 +21,8 @@ const postNew = async (req, res) => {
   }
   const user = await dbClient.createUser(email, password);
   const id = `${user.insertedId}`;
+
+  userQueue.add({ userId: id });
   res.status(201).json({ id, email });
 };
 
@@ -25,7 +30,9 @@ const getUsers = async (req, res) => {
   try {
     const users = await dbClient.getUsers();
     res.status(200).json(users);
-  } catch (err) { throw new Error(err.message); }
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };
 
 const getMe = async (req, res) => {

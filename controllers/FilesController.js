@@ -4,8 +4,11 @@ const fs = require('fs');
 const path = require('path');
 const mongoDBCore = require('mongodb/lib/core');
 const { contentType } = require('mime-types');
+const Queue = require('bull/lib/queue');
 const dbClient = require('../utils/db');
 const { getUserId } = require('../utils/helpers');
+
+const fileQueue = new Queue('thumbnail generation');
 
 const FILE_TYPES = {
   folder: 'folder',
@@ -90,7 +93,13 @@ const postUpload = async (req, res) => {
     file.id = holder.insertedId;
 
     delete file._id;
+
     file.parentId = parentId || 0;
+    if (type === FILE_TYPES.image) {
+      const jobName = `Image thumbnail [${userId}-${file.id}]`;
+      fileQueue.add({ userId, fileId: file.id, name: jobName });
+    }
+
     res.status(201).json(file);
   } catch (err) {
     console.log(`Error: ${err.message}`);
