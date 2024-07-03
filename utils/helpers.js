@@ -1,30 +1,21 @@
 #!/usr/bin/node
 
 const sha1 = require('sha1');
+const redisClient = require('../utils/redis');
 
 const pwdHashed = (pwd) => sha1(pwd);
-const getAuthzHeader = (req) => {
-  const header = req.headers.authorization;
-  if (!header) {
-    return null;
-  }
-  return header;
-};
 
-const getToken = (authzHeader) => {
-  const tokenType = authzHeader.substring(0, 6);
-  if (tokenType !== 'Basic ') {
-    return null;
+const getUserId = async (req) => {
+  const token = req.headers['x-token'];
+  if (!token) {
+    res.status(401).json({ error: 'Unauthorized' });
+    throw new Error('token not found');
   }
-  return authzHeader.substring(6);
-};
 
-const decodeToken = (token) => {
-  const decodedToken = Buffer.from(token, 'base64').toString('utf8');
-  if (!decodedToken.includes(':')) {
-    return null;
-  }
-  return decodedToken;
+  const key = `auth_${token}`;
+
+  let userId = await redisClient.get(key);
+  return userId;
 };
 
 const getCredentials = (decodedToken) => {
@@ -35,22 +26,8 @@ const getCredentials = (decodedToken) => {
   return { email, password };
 };
 
-class FILE {
-  constructor({ userId, name, type, parentId, isPublic, data }) {
-    this.userId = userId;
-    this.name = name;
-    this.type = type;
-    this.parentId = parentId;
-    this.isPublic = isPublic;
-    this.data = data;
-  }
-}
-
 module.exports = {
   pwdHashed,
-  getAuthzHeader,
-  getToken,
-  decodeToken,
   getCredentials,
-  FILE,
+  getUserId,
 };

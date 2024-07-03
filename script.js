@@ -1,0 +1,2 @@
+use db;
+show collections;

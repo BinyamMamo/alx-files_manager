@@ -48,20 +48,72 @@ class DBClient {
     return file;
   }
 
-  async getFile(_id) {
+  async getFile(id) {
+    try {
+      const _id = new mongo.ObjectID(id);
+      await this.client.connect();
+      const file = await this.client
+        .db(this.database)
+        .collection('files')
+        .findOne({ _id });
+
+      return file;
+    } catch (err) {
+      throw new Error(`Getting a FIle(${id}): ${err.message}`);
+    }
+  }
+
+  async getFiles(match, skip, limit) {
+    let files = [];
+    try {
+      await this.client.connect();
+      files = await this.client
+        .db(this.database)
+        .collection('files')
+        .aggregate([
+          {
+            $match: match,
+          },
+          { $sort: { _id: -1 } },
+          { $skip: skip },
+          { $limit: limit },
+          {
+            $project: {
+              _id: 0,
+              id: '$_id',
+              userId: '$userId',
+              name: '$name',
+              type: '$type',
+              isPublic: '$isPublic',
+              parentId: {
+                $cond: {
+                  if: { $eq: ['$parentId', '0'] },
+                  then: 0,
+                  else: '$parentId',
+                },
+              },
+            },
+          },
+        ])
+        .toArray();
+    } catch (err) {
+      console.error(err);
+    }
+    return files;
+  }
+
+  async updateFile(filter, update) {
     try {
       await this.client.connect();
       const file = await this.client
         .db(this.database)
         .collection('files')
-        .find({ _id })
-        .toArray();
-      if (!file.length) {
-        return null;
-      }
-      return file[0];
+        .updateOne(filter, { $set: update });
+
+      return file;
     } catch (err) {
-      throw new Error(`Getting a FIle(${_id}): ${err.message}`);
+      console.error(err);
+			return null;
     }
   }
 
@@ -123,12 +175,8 @@ class DBClient {
     const user = await this.client
       .db(this.database)
       .collection('users')
-      .find({ _id })
-      .toArray();
-    if (!user.length) {
-      return null;
-    }
-    return user[0];
+      .findOne({ _id });
+    return user;
   }
 
   async userExist(email) {
